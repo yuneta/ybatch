@@ -343,8 +343,7 @@ int main(int argc, char *argv[])
     }
 
     /*------------------------------------------------*
-     *  To trace memory you also need
-     *  link with ghelpersd library
+     *  To trace memory
      *------------------------------------------------*/
 #ifdef DEBUG
     static uint32_t mem_list[] = {0};
