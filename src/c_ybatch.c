@@ -117,7 +117,7 @@ PRIVATE void mt_create(hgobj gobj)
 {
     PRIVATE_DATA *priv = gobj_priv_data(gobj);
 
-    priv->timer = gobj_create("ybatch", GCLASS_TIMER, 0, gobj);
+    priv->timer = gobj_create("", GCLASS_TIMER, 0, gobj);
     rc_init_iter(&priv->batch_iter);
 
     /*
