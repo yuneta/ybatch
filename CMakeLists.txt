@@ -65,7 +65,7 @@ TARGET_LINK_LIBRARIES(ybatch
 
     pthread dl  # used by libuv
     lzma        # used by libunwind
-
+    uuid
 )
 
 ##############################################
