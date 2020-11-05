@@ -271,7 +271,7 @@ int main(int argc, char *argv[])
     memset(&arguments, 0, sizeof(arguments));
     arguments.repeat = 1;
     arguments.url = "ws://127.0.0.1:1991";
-    arguments.yuno_role = "";
+    arguments.yuno_role = "yuneta_agent";
     arguments.yuno_name = "";
     arguments.yuno_service = "__default_service__";
 
