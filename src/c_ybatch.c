@@ -915,7 +915,7 @@ PRIVATE GCLASS _gclass = {
         0, //mt_add_child_resource_link
         0, //mt_delete_child_resource_link
         0, //mt_get_resource
-        0, //mt_future24,
+        0, //mt_authorization_parser,
         0, //mt_authenticate,
         0, //mt_list_childs,
         0, //mt_stats_updated,
@@ -924,8 +924,8 @@ PRIVATE GCLASS _gclass = {
         0, //mt_trace_on,
         0, //mt_trace_off,
         0, //mt_gobj_created,
-        0, //mt_permission_on,
-        0, //mt_permission_off,
+        0, //mt_authz_allow,
+        0, //mt_authz_deny,
         0, //mt_publish_event,
         0, //mt_publication_pre_filter,
         0, //mt_publication_filter,
