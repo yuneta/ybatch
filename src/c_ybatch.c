@@ -930,7 +930,7 @@ PRIVATE GCLASS _gclass = {
         0, //mt_publication_pre_filter,
         0, //mt_publication_filter,
         0, //mt_future38,
-        0, //mt_future39,
+        0, //mt_authzs,
         0, //mt_create_node,
         0, //mt_update_node,
         0, //mt_delete_node,
