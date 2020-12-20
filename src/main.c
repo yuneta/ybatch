@@ -381,8 +381,6 @@ int main(int argc, char *argv[])
         0,
         0,
         0,
-        0,
-        0,
         0
     );
     return yuneta_entry_point(
