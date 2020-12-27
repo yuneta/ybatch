@@ -66,7 +66,7 @@ PRIVATE char fixed_config[]= "\
     },                                                              \n\
     'yuno': {                                                       \n\
         'yuno_role': 'ybatch',                                      \n\
-        'classifiers': ['yuneta', 'core']                           \n\
+        'tags': ['yuneta', 'core']                                  \n\
     }                                                               \n\
 }                                                                   \n\
 ";
