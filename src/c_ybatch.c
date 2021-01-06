@@ -950,7 +950,7 @@ PRIVATE GCLASS _gclass = {
         0, //mt_topic_hooks,
         0, //mt_node_parents,
         0, //mt_node_childs,
-        0, //mt_node_instances,
+        0, //mt_list_instances,
         0, //mt_future60,
         0, //mt_topic_size,
         0, //mt_future62,
