@@ -51,7 +51,7 @@ static error_t parse_opt (int key, char *arg, struct argp_state *state);
 #define APP_NAME        "ybatch"
 #define APP_DOC         "Yuneta Batch"
 
-#define APP_VERSION     "4.8.9"
+#define APP_VERSION     "4.8.10"
 #define APP_DATETIME    __DATE__ " " __TIME__
 #define APP_SUPPORT     "<niyamaka at yuneta.io>"
 
