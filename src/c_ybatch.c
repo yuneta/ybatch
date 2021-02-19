@@ -937,7 +937,7 @@ PRIVATE GCLASS _gclass = {
         0, //mt_link_nodes,
         0, //mt_future44,
         0, //mt_unlink_nodes,
-        0, //mt_future46,
+        0, //mt_topic_jtree,
         0, //mt_get_node,
         0, //mt_list_nodes,
         0, //mt_shoot_snap,
