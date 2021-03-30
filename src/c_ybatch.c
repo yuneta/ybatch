@@ -777,7 +777,7 @@ PRIVATE int ac_mt_command_answer(hgobj gobj, const char *event, json_t *kw, hgob
         /*
          *  Comando con error y sin ignorar error, aborta
          */
-        printf("%s: %s\n", "ERROR", comment);
+        printf("%s%s: %s%s\n", On_Red BWhite, "ERROR", comment, Color_Off);
 
         gobj_set_exit_code(-1);
         gobj_shutdown();
@@ -786,7 +786,11 @@ PRIVATE int ac_mt_command_answer(hgobj gobj, const char *event, json_t *kw, hgob
     }
 
     if(priv->verbose) {
-        printf("<-- %s: %s\n", (result<0)?"ERROR":"Ok", comment);
+        if(result < 0) {
+            printf("<-- %s%s: %s%s\n", On_Red BWhite, "ERROR", comment, Color_Off);
+        } else {
+            printf("<-- %s%s: %s%s\n", On_Green BWhite, "Ok", comment, Color_Off);
+        }
     }
 
     display_webix_result(
