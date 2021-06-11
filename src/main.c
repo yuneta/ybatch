@@ -9,7 +9,7 @@
  ****************************************************************************/
 #include <argp.h>
 #include <unistd.h>
-#include <yuneta.h>
+#include <yuneta_tls.h>
 #include "c_ybatch.h"
 #include "yuno_ybatch.h"
 
@@ -249,6 +249,11 @@ static error_t parse_opt (int key, char *arg, struct argp_state *state)
  ***************************************************************************/
 static void register_yuno_and_more(void)
 {
+    /*------------------------*
+     *  Register yuneta-tls
+     *------------------------*/
+    yuneta_register_c_tls();
+
     /*-------------------*
      *  Register yuno
      *-------------------*/
