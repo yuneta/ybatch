@@ -58,11 +58,11 @@ SDATA (ASN_OCTET_STR,   "path",             0,                          0,      
 SDATA (ASN_INTEGER,     "repeat",           0,                          1,              "Repeat the execution of the batch. -1 infinite"),
 SDATA (ASN_INTEGER,     "pause",            0,                          0,              "Pause between executions"),
 
-SDATAPM (ASN_OCTET_STR, "url",              0,                          "ws://127.0.0.1:1991",  "Agent's url to connect. Can be a ip/hostname or a full url"),
-SDATAPM (ASN_OCTET_STR, "yuno_name",        0,                          "",             "Yuno name"),
-SDATAPM (ASN_OCTET_STR, "yuno_role",        0,                          "yuneta_agent", "Yuno role"),
-SDATAPM (ASN_OCTET_STR, "yuno_service",     0,                          "agent",        "Yuno service"),
-SDATAPM (ASN_OCTET_STR, "display_mode",     0,                          "form",         "Display mode: table or form"),
+SDATA (ASN_OCTET_STR,   "url",              0,                          "ws://127.0.0.1:1991",  "Agent's url to connect. Can be a ip/hostname or a full url"),
+SDATA (ASN_OCTET_STR,   "yuno_name",        0,                          "",            "Yuno name"),
+SDATA (ASN_OCTET_STR,   "yuno_role",        0,                          "yuneta_agent", "Yuno role"),
+SDATA (ASN_OCTET_STR,   "yuno_service",     0,                          "agent",        "Yuno service"),
+SDATA (ASN_OCTET_STR,   "display_mode",     0,                          "form",         "Display mode: table or form"),
 
 SDATA (ASN_INTEGER,     "timeout",          0,                          60*1000,        "Timeout service responses"),
 SDATA (ASN_POINTER,     "user_data",        0,                          0,              "user data"),
@@ -413,10 +413,11 @@ PRIVATE int extrae_json(hgobj gobj)
 /***************************************************************************
  *
  ***************************************************************************/
-PRIVATE char agent_filter_chain_config[]= "\
+PRIVATE char agent_insecure_config[]= "\
 {                                               \n\
     'name': '(^^__url__^^)',                    \n\
     'gclass': 'IEvent_cli',                     \n\
+    'as_unique': true,                          \n\
     'kw': {                                     \n\
         'remote_yuno_name': '(^^__yuno_name__^^)',      \n\
         'remote_yuno_role': '(^^__yuno_role__^^)',      \n\
@@ -438,13 +439,17 @@ PRIVATE char agent_filter_chain_config[]= "\
                         {                                               \n\
                             'name': '(^^__url__^^)',                    \n\
                             'gclass': 'GWebSocket',                     \n\
-                            'kw': {                                     \n\
-                                'kw_connex': {                          \n\
-                                    'urls':[                            \n\
-                                        '(^^__url__^^)'                 \n\
-                                    ]                                   \n\
+                            'zchilds': [                                \n\
+                                {                                       \n\
+                                    'name': '(^^__url__^^)',            \n\
+                                    'gclass': 'Connex',                 \n\
+                                    'kw': {                             \n\
+                                        'urls':[                        \n\
+                                            '(^^__url__^^)'             \n\
+                                        ]                               \n\
+                                    }                                   \n\
                                 }                                       \n\
-                            }                                           \n\
+                            ]                                           \n\
                         }                                               \n\
                     ]                                           \n\
                 }                                               \n\
@@ -453,15 +458,61 @@ PRIVATE char agent_filter_chain_config[]= "\
     ]                                           \n\
 }                                               \n\
 ";
+
+PRIVATE char agent_secure_config[]= "\
+{                                               \n\
+    'name': '(^^__url__^^)',                    \n\
+    'gclass': 'IEvent_cli',                     \n\
+    'as_unique': true,                          \n\
+    'kw': {                                     \n\
+        'remote_yuno_name': '(^^__yuno_name__^^)',      \n\
+        'remote_yuno_role': '(^^__yuno_role__^^)',      \n\
+        'remote_yuno_service': '(^^__yuno_service__^^)' \n\
+    },                                          \n\
+    'zchilds': [                                 \n\
+        {                                               \n\
+            'name': '(^^__url__^^)',                    \n\
+            'gclass': 'IOGate',                         \n\
+            'kw': {                                     \n\
+            },                                          \n\
+            'zchilds': [                                 \n\
+                {                                               \n\
+                    'name': '(^^__url__^^)',                    \n\
+                    'gclass': 'Channel',                        \n\
+                    'kw': {                                     \n\
+                    },                                          \n\
+                    'zchilds': [                                 \n\
+                        {                                               \n\
+                            'name': '(^^__url__^^)',                    \n\
+                            'gclass': 'GWebSocket',                     \n\
+                            'zchilds': [                                \n\
+                                {                                       \n\
+                                    'name': '(^^__url__^^)',            \n\
+                                    'gclass': 'Connexs',                \n\
+                                    'kw': {                             \n\
+                                        'crypto': {                     \n\
+                                            'library': 'openssl',       \n\
+                                            'trace': false              \n\
+                                        },                              \n\
+                                        'urls':[                        \n\
+                                            '(^^__url__^^)'             \n\
+                                        ]                               \n\
+                                    }                                   \n\
+                                }                                       \n\
+                            ]                                           \n\
+                        }                                               \n\
+                    ]                                           \n\
+                }                                               \n\
+            ]                                           \n\
+        }                                               \n\
+    ]                                           \n\
+}                                               \n\
+";
+
 PRIVATE int cmd_connect(hgobj gobj)
 {
     PRIVATE_DATA *priv = gobj_priv_data(gobj);
     const char *url = gobj_read_str_attr(gobj, "url");
-    char _url[128];
-    if(!strchr(url, ':')) {
-        snprintf(_url, sizeof(_url), "ws://%s:1991", url); // TODO saca el puerto 1991 a configuración
-        url = _url;
-    }
     const char *yuno_name = gobj_read_str_attr(gobj, "yuno_name");
     const char *yuno_role = gobj_read_str_attr(gobj, "yuno_role");
     const char *yuno_service = gobj_read_str_attr(gobj, "yuno_service");
@@ -480,9 +531,20 @@ PRIVATE int cmd_connect(hgobj gobj)
     char *sjson_config_variables = json2str(jn_config_variables);
     JSON_DECREF(jn_config_variables);
 
+    /*
+     *  Get schema to select tls or not
+     */
+    char schema[20]={0}, host[120]={0}, port[40]={0};
+    parse_http_url(url, schema, sizeof(schema), host, sizeof(host), port, sizeof(port), FALSE);
+
+    char *agent_config = agent_insecure_config;
+    if(strcmp(schema, "wss")==0) {
+        agent_config = agent_secure_config;
+    }
+
     hgobj gobj_remote_agent = gobj_create_tree(
         gobj,
-        agent_filter_chain_config,
+        agent_config,
         sjson_config_variables,
         "EV_ON_SETUP",
         "EV_ON_SETUP_COMPLETE"
