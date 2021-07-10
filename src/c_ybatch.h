@@ -7,8 +7,7 @@
  *          Copyright (c) 2016 Niyamaka.
  *          All Rights Reserved.
  ****************************************************************************/
-#ifndef _C_YBATCH_H
-#define _C_YBATCH_H 1
+#pragma once
 
 #include <yuneta.h>
 
@@ -50,6 +49,4 @@ PUBLIC GCLASS *gclass_ybatch(void);
 
 #ifdef __cplusplus
 }
-#endif
-
 #endif
