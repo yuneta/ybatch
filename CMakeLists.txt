@@ -33,7 +33,7 @@ else(HAVE_REGEX_H)
     message("***  WARNING: GNU C regex library not found.")
 endif(HAVE_REGEX_H)
 
-include_directories(BEFORE /yuneta/development/output/include)
+include_directories(/yuneta/development/output/include)
 
 ##############################################
 #   Source
