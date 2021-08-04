@@ -58,6 +58,7 @@ SDATA (ASN_OCTET_STR,   "path",             0,                          0,      
 SDATA (ASN_INTEGER,     "repeat",           0,                          1,              "Repeat the execution of the batch. -1 infinite"),
 SDATA (ASN_INTEGER,     "pause",            0,                          0,              "Pause between executions"),
 
+SDATA (ASN_OCTET_STR,   "jwt",              0,          "",             "Jwt"),
 SDATA (ASN_OCTET_STR,   "url",              0,                          "ws://127.0.0.1:1991",  "Agent's url to connect. Can be a ip/hostname or a full url"),
 SDATA (ASN_OCTET_STR,   "yuno_name",        0,                          "",            "Yuno name"),
 SDATA (ASN_OCTET_STR,   "yuno_role",        0,                          "yuneta_agent", "Yuno role"),
@@ -465,6 +466,7 @@ PRIVATE char agent_secure_config[]= "\
     'gclass': 'IEvent_cli',                     \n\
     'as_unique': true,                          \n\
     'kw': {                                     \n\
+        'jwt': '(^^__jwt__^^)',                         \n\
         'remote_yuno_name': '(^^__yuno_name__^^)',      \n\
         'remote_yuno_role': '(^^__yuno_role__^^)',      \n\
         'remote_yuno_service': '(^^__yuno_service__^^)' \n\
@@ -512,6 +514,7 @@ PRIVATE char agent_secure_config[]= "\
 PRIVATE int cmd_connect(hgobj gobj)
 {
     PRIVATE_DATA *priv = gobj_priv_data(gobj);
+    const char *jwt = gobj_read_str_attr(gobj, "jwt");
     const char *url = gobj_read_str_attr(gobj, "url");
     const char *yuno_name = gobj_read_str_attr(gobj, "yuno_name");
     const char *yuno_role = gobj_read_str_attr(gobj, "yuno_role");
@@ -521,8 +524,9 @@ PRIVATE int cmd_connect(hgobj gobj)
      *  Each display window has a gobj to send the commands (saved in user_data).
      *  For external agents create a filter-chain of gobjs
      */
-    json_t * jn_config_variables = json_pack("{s:{s:s, s:s, s:s, s:s}}",
+    json_t * jn_config_variables = json_pack("{s:{s:s, s:s, s:s, s:s, s:s}}",
         "__json_config_variables__",
+            "__jwt__", jwt,
             "__url__", url,
             "__yuno_name__", yuno_name,
             "__yuno_role__", yuno_role,
