@@ -52,22 +52,24 @@ SDATA_END()
  *      Attributes - order affect to oid's
  *---------------------------------------------*/
 PRIVATE sdata_desc_t tattr_desc[] = {
-/*-ATTR-type------------name----------------flag------------------------default---------description---------- */
-SDATA (ASN_INTEGER,     "verbose",          0,                          0,              "Verbose mode."),
-SDATA (ASN_OCTET_STR,   "path",             0,                          0,              "Batch filename to execute."),
-SDATA (ASN_INTEGER,     "repeat",           0,                          1,              "Repeat the execution of the batch. -1 infinite"),
-SDATA (ASN_INTEGER,     "pause",            0,                          0,              "Pause between executions"),
+/*-ATTR-type------------name----------------flag--------default---------description---------- */
+SDATA (ASN_INTEGER,     "verbose",          0,          0,              "Verbose mode."),
+SDATA (ASN_OCTET_STR,   "path",             0,          0,              "Batch filename to execute."),
+SDATA (ASN_INTEGER,     "repeat",           0,          1,              "Repeat the execution of the batch. -1 infinite"),
+SDATA (ASN_INTEGER,     "pause",            0,          0,              "Pause between executions"),
 
+SDATA (ASN_OCTET_STR,   "token_endpoint",   0,          "",             "OAuth2 Token EndPoint (get now a jwt)"),
+SDATA (ASN_OCTET_STR,   "user_id",          0,          "",             "OAuth2 User Id (get now a jwt)"),
 SDATA (ASN_OCTET_STR,   "jwt",              0,          "",             "Jwt"),
 SDATA (ASN_OCTET_STR,   "url",              0,                          "ws://127.0.0.1:1991",  "Agent's url to connect. Can be a ip/hostname or a full url"),
-SDATA (ASN_OCTET_STR,   "yuno_name",        0,                          "",            "Yuno name"),
-SDATA (ASN_OCTET_STR,   "yuno_role",        0,                          "yuneta_agent", "Yuno role"),
-SDATA (ASN_OCTET_STR,   "yuno_service",     0,                          "agent",        "Yuno service"),
-SDATA (ASN_OCTET_STR,   "display_mode",     0,                          "form",         "Display mode: table or form"),
+SDATA (ASN_OCTET_STR,   "yuno_name",        0,          "",            "Yuno name"),
+SDATA (ASN_OCTET_STR,   "yuno_role",        0,          "yuneta_agent", "Yuno role"),
+SDATA (ASN_OCTET_STR,   "yuno_service",     0,          "agent",        "Yuno service"),
+SDATA (ASN_OCTET_STR,   "display_mode",     0,          "form",         "Display mode: table or form"),
 
-SDATA (ASN_INTEGER,     "timeout",          0,                          60*1000,        "Timeout service responses"),
-SDATA (ASN_POINTER,     "user_data",        0,                          0,              "user data"),
-SDATA (ASN_POINTER,     "user_data2",       0,                          0,              "more user data"),
+SDATA (ASN_INTEGER,     "timeout",          0,          60*1000,        "Timeout service responses"),
+SDATA (ASN_POINTER,     "user_data",        0,          0,              "user data"),
+SDATA (ASN_POINTER,     "user_data2",       0,          0,              "more user data"),
 SDATA_END()
 };
 
