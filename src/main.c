@@ -298,6 +298,9 @@ int main(int argc, char *argv[])
     arguments.yuno_role = "yuneta_agent";
     arguments.yuno_name = "";
     arguments.yuno_service = "__default_service__";
+    arguments.token_endpoint = "";
+    arguments.user_id = "";
+    arguments.jwt = "";
 
     /*
      *  Save args
@@ -338,7 +341,7 @@ int main(int argc, char *argv[])
         snprintf(param2, l, "--config-file=%s", arguments.config_json_file);
         argvs[idx++] = param2;
     } else {
-        json_t *kw_utility = json_pack("{s:{s:i, s:i, s:s, s:s, s:s, s:s, s:s}}",
+        json_t *kw_utility = json_pack("{s:{s:i, s:i, s:s, s:s, s:s, s:s, s:s, s:s, s:s, s:s}}",
             "global",
             "YBatch.repeat", arguments.repeat,
             "YBatch.verbose", arguments.verbose,
@@ -352,6 +355,10 @@ int main(int argc, char *argv[])
             "YBatch.yuno_service", arguments.yuno_service
         );
         char *param1_ = json_dumps(kw_utility, JSON_COMPACT);
+        if(!param1_) {
+            printf("Some parameter is wrong\n");
+            exit(-1);
+        }
         int len = strlen(param1_) + 3;
         char *param1 = malloc(len);
         if(param1) {

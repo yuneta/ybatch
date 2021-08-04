@@ -164,7 +164,12 @@ PRIVATE int mt_start(hgobj gobj)
     extrae_json(gobj);
     gobj_start(priv->timer);
 
-    cmd_connect(gobj);
+    const char *token_endpoint = gobj_read_str_attr(gobj, "token_endpoint");
+    const char *user_id = gobj_read_str_attr(gobj, "user_id");
+    if(!empty_string(token_endpoint) && !empty_string(user_id)) {
+    } else {
+        cmd_connect(gobj);
+    }
 
     return 0;
 }
