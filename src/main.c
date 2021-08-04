@@ -141,19 +141,24 @@ static struct argp_option options[] = {
 // {0,                 0,      0,      0,   "Remote Service keys", 1},
 // {"xxxx",            's',    0,      0,   "TODO. Default:", 1},
 /*-name-------------key-----arg---------flags---doc-----------------group */
-{0,                 0,      0,          0,      "Connection keys", 2},
-{"url",             'u',    "URL",      0,      "Url to connect. Default: 'ws://127.0.0.1:1991'.", 2},
-{"yuno_role",       'O',    "ROLE",     0,      "Remote yuno role. Default: ''", 2},
-{"yuno_name",       'o',    "NAME",     0,      "Remote yuno name. Default: ''", 2},
-{"service",         'S',    "SERVICE",  0,      "Remote yuno service. Default: '__default_service__'", 2},
-{0,                 0,      0,          0,      "Local keys", 3},
-{"repeat",          't',    "TIMES",    0,      "Repeat execution 'repeat' times. Set -1 to infinite loop. Default: 1", 1},
-{"print",           'p',    0,          0,      "Print configuration.", 3},
-{"config-file",     'f',    "FILE",     0,      "load settings from json config file or [files]", 3},
+{0,                 0,      0,          0,      "OAuth2 keys", 2},
+{"token_endpoint",  'e',    "ENDPOINT", 0,      "OAuth2 Token EndPoint", 2},
+{"user_id",         'x',    "USER_ID",  0,      "OAuth2 User Id", 2},
+
+{0,                 0,      0,          0,      "Connection keys", 3},
+{"url",             'u',    "URL",      0,      "Url to connect. Default: 'ws://127.0.0.1:1991'.", 3},
+{"yuno_role",       'O',    "ROLE",     0,      "Remote yuno role. Default: ''", 3},
+{"yuno_name",       'o',    "NAME",     0,      "Remote yuno name. Default: ''", 3},
+{"service",         'S',    "SERVICE",  0,      "Remote yuno service. Default: '__default_service__'", 3},
+
+{0,                 0,      0,          0,      "Local keys", 4},
+{"repeat",          't',    "TIMES",    0,      "Repeat execution 'repeat' times. Set -1 to infinite loop. Default: 1", 4},
+{"print",           'p',    0,          0,      "Print configuration.", 4},
+{"config-file",     'f',    "FILE",     0,      "load settings from json config file or [files]", 4},
 {"print-role",      'r',    0,          0,      "print the basic yuno's information"},
-{"verbose",         'l',    "LEVEL",    0,      "Verbose level.", 3},
-{"version",         'v',    0,          0,      "Print version.", 3},
-{"yuneta-version",  'V',    0,          0,      "Print yuneta version"},
+{"verbose",         'l',    "LEVEL",    0,      "Verbose level.", 4},
+{"version",         'v',    0,          0,      "Print version.", 4},
+{"yuneta-version",  'V',    0,          0,      "Print yuneta version", 4},
 {0}
 };
 
