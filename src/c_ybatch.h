@@ -9,7 +9,7 @@
  ****************************************************************************/
 #pragma once
 
-#include <yuneta.h>
+#include <yuneta_tls.h>
 
 #ifdef __cplusplus
 extern "C"{
