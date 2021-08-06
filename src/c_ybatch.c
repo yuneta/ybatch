@@ -60,6 +60,7 @@ SDATA (ASN_INTEGER,     "pause",            0,          0,              "Pause b
 
 SDATA (ASN_OCTET_STR,   "token_endpoint",   0,          "",             "OAuth2 Token EndPoint (interactive jwt)"),
 SDATA (ASN_OCTET_STR,   "user_id",          0,          "",             "OAuth2 User Id (interactive jwt)"),
+SDATA (ASN_OCTET_STR,   "client_id",        0,          "",             "OAuth2 client id (azp - authorized party ) (interactive jwt)"),
 SDATA (ASN_OCTET_STR,   "jwt",              0,          "",             "Jwt"),
 SDATA (ASN_OCTET_STR,   "url",              0,                          "ws://127.0.0.1:1991",  "Agent's url to connect. Can be a ip/hostname or a full url"),
 SDATA (ASN_OCTET_STR,   "yuno_name",        0,          "",            "Yuno name"),
