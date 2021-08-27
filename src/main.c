@@ -34,6 +34,7 @@ struct arguments
 
     char *token_endpoint;
     char *user_id;
+    char *user_passw;
     char *jwt;
 
     int verbose;                /* verbose */
@@ -146,6 +147,7 @@ static struct argp_option options[] = {
 {0,                 0,      0,          0,      "OAuth2 keys", 20},
 {"token_endpoint",  'e',    "ENDPOINT", 0,      "OAuth2 Token EndPoint (get now a jwt)", 20},
 {"user_id",         'x',    "USER_ID",  0,      "OAuth2 User Id (get now a jwt)", 20},
+{"user_passw",      'X',    "USER_PASSW",0,     "OAuth2 User Password (get now a jwt)", 20},
 {"jwt",             'j',    "JWT",      0,      "Jwt (previously got it)", 21},
 
 {0,                 0,      0,          0,      "Connection keys", 30},
@@ -190,6 +192,9 @@ static error_t parse_opt (int key, char *arg, struct argp_state *state)
         break;
     case 'x':
         arguments->user_id = arg;
+        break;
+    case 'X':
+        arguments->user_passw = arg;
         break;
     case 'j':
         arguments->jwt = arg;
@@ -300,6 +305,7 @@ int main(int argc, char *argv[])
     arguments.yuno_service = "__default_service__";
     arguments.token_endpoint = "";
     arguments.user_id = "";
+    arguments.user_passw = "";
     arguments.jwt = "";
 
     /*
@@ -348,6 +354,7 @@ int main(int argc, char *argv[])
             "YBatch.path", path,
             "YBatch.token_endpoint", arguments.token_endpoint,
             "YBatch.user_id", arguments.user_id,
+            "YBatch.user_passw", arguments.user_passw,
             "YBatch.jwt", arguments.jwt,
             "YBatch.url", arguments.url,
             "YBatch.yuno_role", arguments.yuno_role,
