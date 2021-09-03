@@ -23,6 +23,7 @@
 /***************************************************************************
  *              Prototypes
  ***************************************************************************/
+PRIVATE int do_authenticate_task(hgobj gobj);
 PRIVATE int extrae_json(hgobj gobj);
 PRIVATE int cmd_connect(hgobj gobj);
 PRIVATE int display_webix_result(
@@ -64,6 +65,7 @@ SDATA (ASN_OCTET_STR,   "user_passw",       0,          "",             "OAuth2 
 SDATA (ASN_OCTET_STR,   "client_id",        0,          "",             "OAuth2 client id (azp - authorized party ) (interactive jwt)"),
 SDATA (ASN_OCTET_STR,   "jwt",              0,          "",             "Jwt"),
 SDATA (ASN_OCTET_STR,   "url",              0,                          "ws://127.0.0.1:1991",  "Agent's url to connect. Can be a ip/hostname or a full url"),
+SDATA (ASN_OCTET_STR,   "realm_name",       0,          "",             "Realm name (used for Authorized Party, 'azp' field of jwt)"),
 SDATA (ASN_OCTET_STR,   "yuno_name",        0,          "",            "Yuno name"),
 SDATA (ASN_OCTET_STR,   "yuno_role",        0,          "yuneta_agent", "Yuno role"),
 SDATA (ASN_OCTET_STR,   "yuno_service",     0,          "agent",        "Yuno service"),
@@ -174,7 +176,7 @@ PRIVATE int mt_start(hgobj gobj)
          *  then try to authenticate
          *  else use default local connection
          */
-        // TODO do_authenticate_task(gobj);
+        do_authenticate_task(gobj);
     } else {
         cmd_connect(gobj);
     }
@@ -209,6 +211,31 @@ PRIVATE int mt_stop(hgobj gobj)
 
 
 
+
+/***************************************************************************
+ *
+ ***************************************************************************/
+PRIVATE int do_authenticate_task(hgobj gobj)
+{
+    /*-----------------------------*
+     *      Create the task
+     *-----------------------------*/
+    json_t *kw = json_pack("{s:s, s:s, s:s, s:s}",
+        "token_endpoint", gobj_read_str_attr(gobj, "token_endpoint"), // contains the owner
+        "user_id", gobj_read_str_attr(gobj, "user_id"),
+        "user_passw", gobj_read_str_attr(gobj, "user_passw"),
+        "azp", gobj_read_str_attr(gobj, "realm_name")   // Our realm is the Authorized Party in jwt
+    );
+
+    hgobj gobj_task = gobj_create_unique("task-authenticate", GCLASS_TASK_AUTHENTICATE, kw, gobj);
+    gobj_subscribe_event(gobj_task, "EV_ON_TOKEN", 0, gobj);
+    gobj_set_volatil(gobj_task, TRUE); // auto-destroy
+
+    /*-----------------------*
+     *      Start task
+     *-----------------------*/
+    return gobj_start(gobj_task);
+}
 
 /***************************************************************************
  *
@@ -761,6 +788,30 @@ PRIVATE int tira_dela_cola(hgobj gobj)
 
 
 /***************************************************************************
+ *
+ ***************************************************************************/
+PRIVATE int ac_on_token(hgobj gobj, const char *event, json_t *kw, hgobj src)
+{
+    int result = kw_get_int(kw, "result", -1, KW_REQUIRED);
+    if(result < 0) {
+        if(1) {
+            const char *comment = kw_get_str(kw, "comment", "", 0);
+            printf("\n%s", comment);
+            printf("\nAbort.\n");
+        }
+        gobj_set_exit_code(-1);
+        gobj_shutdown();
+    } else {
+        const char *jwt = kw_get_str(kw, "jwt", "", KW_REQUIRED);
+        gobj_write_str_attr(gobj, "jwt", jwt);
+        cmd_connect(gobj);
+    }
+
+    KW_DECREF(kw);
+    return 0;
+}
+
+/***************************************************************************
  *  Execute batch of input parameters when the route is opened.
  ***************************************************************************/
 PRIVATE int ac_on_open(hgobj gobj, const char *event, json_t *kw, hgobj src)
@@ -904,6 +955,7 @@ PRIVATE int ac_timeout(hgobj gobj, const char *event, json_t *kw, hgobj src)
  ***************************************************************************/
 PRIVATE const EVENT input_events[] = {
     // top input
+    {"EV_ON_TOKEN",                 0,  0,  0},
     {"EV_ON_OPEN",                  0, 0, 0},
     {"EV_ON_CLOSE",                 0, 0, 0},
     {"EV_MT_STATS_ANSWER",          EVF_PUBLIC_EVENT, 0, 0},
@@ -925,6 +977,7 @@ PRIVATE const char *state_names[] = {
 };
 
 PRIVATE EV_ACTION ST_DISCONNECTED[] = {
+    {"EV_ON_TOKEN",                 ac_on_token,                0},
     {"EV_ON_OPEN",                  ac_on_open,                 "ST_CONNECTED"},
     {"EV_ON_CLOSE",                 ac_on_close,                0},
     {"EV_STOPPED",                  0,                          0},
