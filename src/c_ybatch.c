@@ -64,7 +64,6 @@ SDATA (ASN_OCTET_STR,   "auth_url",         0,          "",             "OAuth2 
 SDATA (ASN_OCTET_STR,   "auth_owner",       0,          "",             "OAuth2 Owner (interactive jwt)"),
 SDATA (ASN_OCTET_STR,   "user_id",          0,          "",             "OAuth2 User Id (interactive jwt)"),
 SDATA (ASN_OCTET_STR,   "user_passw",       0,          "",             "OAuth2 User password (interactive jwt)"),
-SDATA (ASN_OCTET_STR,   "client_id",        0,          "",             "OAuth2 client id (azp - authorized party ) (interactive jwt)"),
 SDATA (ASN_OCTET_STR,   "jwt",              0,          "",             "Jwt"),
 SDATA (ASN_OCTET_STR,   "url",              0,                          "ws://127.0.0.1:1991",  "Agent's url to connect. Can be a ip/hostname or a full url"),
 SDATA (ASN_OCTET_STR,   "realm_role",       0,          "",             "Realm role (used for Authorized Party, 'azp' field of jwt, client_id in keycloak)"),
