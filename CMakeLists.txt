@@ -74,6 +74,7 @@ TARGET_LINK_LIBRARIES(ybatch
     lzma        # used by libunwind
     z rt m
     uuid
+    util
 )
 
 ##############################################
