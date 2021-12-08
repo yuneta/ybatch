@@ -300,7 +300,7 @@ PRIVATE GBUFFER *jsontable2str(json_t *jn_schema, json_t *jn_data)
         }
         gbuf_printf(gbuf, "\n");
     }
-    gbuf_printf(gbuf, "\nTotal: %d\n", row);
+    gbuf_printf(gbuf, "\nTotal: %d\n", (int)row);
 
     return gbuf;
 }
