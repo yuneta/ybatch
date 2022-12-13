@@ -72,7 +72,7 @@ SDATA (ASN_OCTET_STR,   "yuno_role",        0,          "yuneta_agent", "Yuno ro
 SDATA (ASN_OCTET_STR,   "yuno_service",     0,          "agent",        "Yuno service"),
 SDATA (ASN_OCTET_STR,   "display_mode",     0,          "form",         "Display mode: table or form"),
 
-SDATA (ASN_INTEGER,     "timeout",          0,          60*1000,        "Timeout service responses"),
+SDATA (ASN_INTEGER,     "timeout",          0,          15*60*1000,     "Timeout service responses"),
 SDATA (ASN_POINTER,     "user_data",        0,          0,              "user data"),
 SDATA (ASN_POINTER,     "user_data2",       0,          0,              "more user data"),
 SDATA_END()
@@ -951,7 +951,13 @@ PRIVATE int ac_mt_command_answer(hgobj gobj, const char *event, json_t *kw, hgob
  ***************************************************************************/
 PRIVATE int ac_timeout(hgobj gobj, const char *event, json_t *kw, hgobj src)
 {
-    printf("Timeout \n"),
+    log_error(0,
+        "gobj",         "%s", gobj_full_name(gobj),
+        "function",     "%s", __FUNCTION__,
+        "msgset",       "%s", MSGSET_INTERNAL_ERROR,
+        "msg",          "%s", "Timeout",
+        NULL
+    );
     gobj_set_exit_code(-1);
     gobj_shutdown();
 
