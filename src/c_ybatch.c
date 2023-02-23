@@ -584,7 +584,16 @@ PRIVATE int cmd_connect(hgobj gobj)
      *  Get schema to select tls or not
      */
     char schema[20]={0}, host[120]={0}, port[40]={0};
-    parse_http_url(url, schema, sizeof(schema), host, sizeof(host), port, sizeof(port), FALSE);
+    if(parse_http_url(url, schema, sizeof(schema), host, sizeof(host), port, sizeof(port), FALSE)<0) {
+        log_error(0,
+            "gobj",         "%s", gobj_full_name(gobj),
+            "function",     "%s", __FUNCTION__,
+            "msgset",       "%s", MSGSET_PARAMETER_ERROR,
+            "msg",          "%s", "parse_http_url() FAILED",
+            "url",          "%s", url,
+            NULL
+        );
+    }
 
     char *agent_config = agent_insecure_config;
     if(strcmp(schema, "wss")==0) {
