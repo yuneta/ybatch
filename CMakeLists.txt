@@ -54,8 +54,7 @@ TARGET_LINK_LIBRARIES(ybatch
     /yuneta/development/output/lib/libytls.a
     /yuneta/development/output/lib/libghelpers.a
     /yuneta/development/output/lib/libuv.a
-    /yuneta/development/output/lib/liboauth2.a
-    /yuneta/development/output/lib/libcjose.a
+    /yuneta/development/output/lib/libjwt.a
     /yuneta/development/output/lib/libjansson.a
     /yuneta/development/output/lib/libunwind.a
     /yuneta/development/output/lib/libpcre2-8.a
