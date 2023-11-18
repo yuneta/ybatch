@@ -28,7 +28,6 @@ struct arguments
     int print_role;
     int repeat;                 /* repeat time, in seconds (0 remove subscription) */
     char *url;
-    char *auth_owner;
     char *realm_role;
     char *yuno_role;
     char *yuno_name;
@@ -148,11 +147,10 @@ static char args_doc[] = "FILE";
 static struct argp_option options[] = {
 /*-name-------------key-----arg---------flags---doc-----------------group */
 {0,                 0,      0,          0,      "OAuth2 keys", 20},
-{"auth_system",     'K',    "AUTH_SYSTEM",0,    "OAuth2 System (default: keycloak, get now a jwt)", 20},
-{"auth_url",        'k',    "AUTH_URL", 0,      "OAuth2 Server Url (get now a jwt)", 20},
-{"auth_owner",      'w',    "AUTH_OWNER",0,     "OAuth2 Owner (get now a jwt)", 20},
-{"user_id",         'x',    "USER_ID",  0,      "OAuth2 User Id (get now a jwt)", 20},
-{"user_passw",      'X',    "USER_PASSW",0,     "OAuth2 User Password (get now a jwt)", 20},
+{"auth_system",     'K',    "AUTH_SYSTEM",0,    "OpenID System(default: keycloak, to get now a jwt)", 20},
+{"auth_url",        'k',    "AUTH_URL", 0,      "OpenID Endpoint(to get now a jwt)", 20},
+{"user_id",         'x',    "USER_ID",  0,      "OAuth2 User Id (to get now a jwt)", 20},
+{"user_passw",      'X',    "USER_PASSW",0,     "OAuth2 User Password (to get now a jwt)", 20},
 {"jwt",             'j',    "JWT",      0,      "Jwt (previously got it)", 21},
 
 {0,                 0,      0,          0,      "Connection keys", 30},
@@ -198,9 +196,6 @@ static error_t parse_opt (int key, char *arg, struct argp_state *state)
         break;
     case 'k':
         arguments->auth_url = arg;
-        break;
-    case 'w':
-        arguments->auth_owner = arg;
         break;
 
     case 'x':
@@ -322,7 +317,6 @@ int main(int argc, char *argv[])
     arguments.yuno_service = "__default_service__";
     arguments.auth_system = "keycloak";
     arguments.auth_url = "";
-    arguments.auth_owner = "";
     arguments.user_id = "";
     arguments.user_passw = "";
     arguments.jwt = "";
@@ -374,7 +368,6 @@ int main(int argc, char *argv[])
             "YBatch.path", path,
             "YBatch.auth_system", arguments.auth_system,
             "YBatch.auth_url", arguments.auth_url,
-            "YBatch.auth_owner", arguments.auth_owner,
             "YBatch.user_id", arguments.user_id,
             "YBatch.user_passw", arguments.user_passw,
             "YBatch.jwt", arguments.jwt,

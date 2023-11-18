@@ -59,9 +59,8 @@ SDATA (ASN_OCTET_STR,   "path",             0,          0,              "Batch f
 SDATA (ASN_INTEGER,     "repeat",           0,          1,              "Repeat the execution of the batch. -1 infinite"),
 SDATA (ASN_INTEGER,     "pause",            0,          0,              "Pause between executions"),
 
-SDATA (ASN_OCTET_STR,   "auth_system",      0,          "",             "OAuth2 System (interactive jwt)"),
-SDATA (ASN_OCTET_STR,   "auth_url",         0,          "",             "OAuth2 Server Url (interactive jwt)"),
-SDATA (ASN_OCTET_STR,   "auth_owner",       0,          "",             "OAuth2 Owner (interactive jwt)"),
+SDATA (ASN_OCTET_STR,   "auth_system",      0,          "",             "OpenID System(interactive jwt)"),
+SDATA (ASN_OCTET_STR,   "auth_url",         0,          "",             "OpenID Endpoint(interactive jwt)"),
 SDATA (ASN_OCTET_STR,   "user_id",          0,          "",             "OAuth2 User Id (interactive jwt)"),
 SDATA (ASN_OCTET_STR,   "user_passw",       0,          "",             "OAuth2 User password (interactive jwt)"),
 SDATA (ASN_OCTET_STR,   "jwt",              0,          "",             "Jwt"),
@@ -221,10 +220,9 @@ PRIVATE int do_authenticate_task(hgobj gobj)
     /*-----------------------------*
      *      Create the task
      *-----------------------------*/
-    json_t *kw = json_pack("{s:s, s:s, s:s, s:s, s:s, s:s}",
+    json_t *kw = json_pack("{s:s, s:s, s:s, s:s, s:s}",
         "auth_system", gobj_read_str_attr(gobj, "auth_system"),
         "auth_url", gobj_read_str_attr(gobj, "auth_url"),
-        "auth_owner", gobj_read_str_attr(gobj, "auth_owner"),
         "user_id", gobj_read_str_attr(gobj, "user_id"),
         "user_passw", gobj_read_str_attr(gobj, "user_passw"),
         "azp", gobj_read_str_attr(gobj, "realm_role")   // Our realm is the Authorized Party in jwt
