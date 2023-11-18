@@ -28,7 +28,7 @@ struct arguments
     int print_role;
     int repeat;                 /* repeat time, in seconds (0 remove subscription) */
     char *url;
-    char *realm_role;
+    char *azp;
     char *yuno_role;
     char *yuno_name;
     char *yuno_service;
@@ -149,13 +149,13 @@ static struct argp_option options[] = {
 {0,                 0,      0,          0,      "OAuth2 keys", 20},
 {"auth_system",     'K',    "AUTH_SYSTEM",0,    "OpenID System(default: keycloak, to get now a jwt)", 20},
 {"auth_url",        'k',    "AUTH_URL", 0,      "OpenID Endpoint(to get now a jwt)", 20},
+{"azp",             'Z',    "AZP",      0,      "azp (Authorized Party, client_id in keycloak)", 20},
 {"user_id",         'x',    "USER_ID",  0,      "OAuth2 User Id (to get now a jwt)", 20},
 {"user_passw",      'X',    "USER_PASSW",0,     "OAuth2 User Password (to get now a jwt)", 20},
 {"jwt",             'j',    "JWT",      0,      "Jwt (previously got it)", 21},
 
 {0,                 0,      0,          0,      "Connection keys", 30},
 {"url",             'u',    "URL",      0,      "Url to connect. Default: 'ws://127.0.0.1:1991'.", 30},
-{"realm_role",      'Z',    "REALM",    0,      "Realm role (used for Authorized Party, 'azp' field of jwt, client_id in keycloak)", 30},
 {"yuno_role",       'O',    "ROLE",     0,      "Remote yuno role. Default: ''", 30},
 {"yuno_name",       'o',    "NAME",     0,      "Remote yuno name. Default: ''", 30},
 {"yuno_service",    'S',    "SERVICE",  0,      "Remote yuno service. Default: '__default_service__'", 30},
@@ -219,7 +219,7 @@ static error_t parse_opt (int key, char *arg, struct argp_state *state)
         break;
 
     case 'Z':
-        arguments->realm_role = arg;
+        arguments->azp = arg;
         break;
     case 'O':
         arguments->yuno_role = arg;
@@ -311,7 +311,7 @@ int main(int argc, char *argv[])
     memset(&arguments, 0, sizeof(arguments));
     arguments.repeat = 1;
     arguments.url = "ws://127.0.0.1:1991";
-    arguments.realm_role="";
+    arguments.azp="";
     arguments.yuno_role = "yuneta_agent";
     arguments.yuno_name = "";
     arguments.yuno_service = "__default_service__";
@@ -372,7 +372,7 @@ int main(int argc, char *argv[])
             "YBatch.user_passw", arguments.user_passw,
             "YBatch.jwt", arguments.jwt,
             "YBatch.url", arguments.url,
-            "YBatch.realm_role", arguments.realm_role,
+            "YBatch.azp", arguments.azp,
             "YBatch.yuno_role", arguments.yuno_role,
             "YBatch.yuno_name", arguments.yuno_name,
             "YBatch.yuno_service", arguments.yuno_service
