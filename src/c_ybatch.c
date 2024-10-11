@@ -619,7 +619,7 @@ PRIVATE int cmd_connect(hgobj gobj)
 /***************************************************************************
  *
  ***************************************************************************/
-PRIVATE GBUFFER *source2base64(const char *source, char *comment, int commentlen)
+PRIVATE GBUFFER *source2base64_for_yuneta(const char *source, char *comment, int commentlen)
 {
     /*------------------------------------------------*
      *          Check source
@@ -636,6 +636,59 @@ PRIVATE GBUFFER *source2base64(const char *source, char *comment, int commentlen
         snprintf(path, sizeof(path), "%s", source);
     } else {
         snprintf(path, sizeof(path), "/yuneta/development/output/yunos/%s", source);
+    }
+
+    if(access(path, 0)!=0) {
+        snprintf(comment, commentlen, "source '%s' not found", source);
+        return 0;
+    }
+    if(!is_regular_file(path)) {
+        snprintf(comment, commentlen, "source '%s' is not a regular file", path);
+        return 0;
+    }
+    GBUFFER *gbuf_b64 = gbuf_file2base64(path);
+    if(!gbuf_b64) {
+        snprintf(comment, commentlen, "conversion '%s' to base64 failed", path);
+    }
+    return gbuf_b64;
+}
+
+/***************************************************************************
+ *
+ ***************************************************************************/
+PRIVATE const char *get_yunetas_base(void)
+{
+    // Define the default value
+    const char* default_value = "/yuneta/development/outputs/yunos";
+
+    // Get the value of the environment variable YUNETAS_BASE
+    const char* yunetas_base = getenv("YUNETAS_BASE");
+
+    // Return the environment variable value if it's set, otherwise the default value
+    return yunetas_base ? yunetas_base : default_value;
+}
+
+/***************************************************************************
+ *
+ ***************************************************************************/
+PRIVATE GBUFFER *source2base64_for_yunetas(const char *source, char *comment, int commentlen)
+{
+    /*------------------------------------------------*
+     *          Check source
+     *  Frequently, You want install install the output
+     *  of your yuno's make install command.
+     *------------------------------------------------*/
+    if(empty_string(source)) {
+        snprintf(comment, commentlen, "%s", "source empty");
+        return 0;
+    }
+
+    char path[NAME_MAX];
+    if(access(source, 0)==0 && is_regular_file(source)) {
+        snprintf(path, sizeof(path), "%s", source);
+    } else {
+        const char *yunetas_base = get_yunetas_base();
+        build_path2(path, sizeof(path), yunetas_base, source);
     }
 
     if(access(path, 0)!=0) {
@@ -692,11 +745,15 @@ PRIVATE GBUFFER * replace_cli_vars(hgobj gobj, const char *command, char *commen
         *f = 0;
         f++;
 
-        GBUFFER *gbuf_b64 = source2base64(n, comment, commentlen);
+        // YunetaS precedence over Yuneta
+        GBUFFER *gbuf_b64 = source2base64_for_yunetas(n, comment, commentlen);
         if(!gbuf_b64) {
-            gbuf_decref(gbuf);
-            gbmem_free(command_);
-            return 0;
+            gbuf_b64 = source2base64_for_yuneta(n, comment, commentlen);
+            if(!gbuf_b64) {
+                gbuf_decref(gbuf);
+                gbmem_free(command_);
+                return 0;
+            }
         }
 
         gbuf_append(gbuf, "'", 1);
