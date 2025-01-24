@@ -661,8 +661,8 @@ PRIVATE const char *get_yunetas_base(void)
     // Define the default value
     const char* default_value = "/yuneta/development/outputs/yunos";
 
-    // Get the value of the environment variable YUNETAS_BASE
-    const char* yunetas_base = getenv("YUNETAS_BASE");
+    // Get the value of the environment variable YUNETAS_YUNOS
+    const char* yunetas_base = getenv("YUNETAS_YUNOS");
 
     // Return the environment variable value if it's set, otherwise the default value
     return yunetas_base ? yunetas_base : default_value;
